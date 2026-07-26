@@ -1,0 +1,370 @@
+/* Reset and Base Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #0b0f19; /* Premium deep dark background */
+    color: #f3f4f6; /* Off-white text for softer contrast */
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+    padding: 3rem 1.5rem;
+    line-height: 1.6;
+}
+
+/* Container for everything */
+.container {
+    width: 100%;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Logo styling */
+.logo {
+    width: 80px;
+    height: auto;
+    margin-bottom: 1.5rem;
+    filter: drop-shadow(0 0 15px rgba(66, 133, 244, 0.4));
+    transition: transform 0.3s ease;
+}
+
+.logo:hover {
+    transform: scale(1.08);
+}
+
+/* Typography */
+h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    letter-spacing: -0.5px;
+    background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-align: center;
+}
+
+/* Glassmorphism Card Style for Form */
+form {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 3rem;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    align-items: stretch;
+    text-align: left;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #9ca3af;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+input[type="text"],
+textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+
+input[type="text"]:focus,
+textarea:focus {
+    outline: none;
+    border-color: #6366f1;
+    background-color: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+}
+
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Primary Button Styling */
+button.btn-submit {
+    background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.85rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+}
+
+button.btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(79, 70, 229, 0.5);
+    filter: brightness(1.1);
+}
+
+button.btn-submit:active {
+    transform: translateY(0);
+}
+
+/* Row holding Send Greeting + Delete All side by side */
+.button-row {
+    display: flex;
+    flex-direction: row;
+    gap: 0.75rem;
+    align-items: stretch;
+}
+
+.button-row .btn-submit {
+    flex: 1;
+}
+
+/* Destructive Delete All button (sits to the right of Send Greeting) */
+.btn-delete-all {
+    background: linear-gradient(135deg, #b91c1c 0%, #ef4444 100%);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.85rem 1.4rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+    transition: all 0.2s ease;
+}
+
+.btn-delete-all:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.5);
+    filter: brightness(1.1);
+}
+
+.btn-delete-all:active {
+    transform: translateY(0);
+}
+
+/* Utility: hide a form that is only submitted programmatically.
+   Needed so the global `form` card styling doesn't render it. */
+.hidden-form {
+    display: none;
+}
+
+/* Error/Notification Alert — opaque brushed-metal finish */
+.alert {
+    width: 100%;
+    padding: 1rem 1.25rem;
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    text-align: left;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    /* polished-metal edges + lift */
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.25),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.35),
+        0 6px 18px rgba(0, 0, 0, 0.45);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+/* Faded-out state toggled by JS 5s after the page loads */
+.alert.fade-out {
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
+}
+
+/* Layer 1: diagonal sheen highlight band; Layer 2: tinted metal base */
+.alert-error {
+    color: #fecaca;
+    border-color: #b56b6b;
+    background:
+        linear-gradient(115deg, transparent 28%, rgba(255, 255, 255, 0.22) 48%, rgba(255, 255, 255, 0.04) 54%, transparent 72%),
+        linear-gradient(135deg, #6b3b3b 0%, #a85454 22%, #4a2626 48%, #7d4040 72%, #3d2020 100%);
+}
+
+.alert-success {
+    color: #bbf7d0;
+    border-color: #5fae84;
+    background:
+        linear-gradient(115deg, transparent 28%, rgba(255, 255, 255, 0.22) 48%, rgba(255, 255, 255, 0.04) 54%, transparent 72%),
+        linear-gradient(135deg, #2f5d49 0%, #4f8a6e 22%, #21402f 48%, #3c6b52 72%, #1d3627 100%);
+}
+
+/* Table container for responsiveness */
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    margin-top: 1rem;
+}
+
+/* Table styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+th, td {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+th {
+    background-color: #3b82f6;
+    font-weight: 600;
+    color: #ffffff;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+tr:hover td {
+    background-color: rgba(255, 255, 255, 0.01);
+}
+
+.empty-state {
+    color: #6b7280;
+    text-align: center;
+    padding: 3rem;
+    font-style: italic;
+}
+
+/* Red Delete Trashbin Button */
+.btn-delete {
+    background: transparent;
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: 6px;
+    padding: 0.5rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    font-size: 1.1rem;
+}
+
+.btn-delete:hover {
+    background-color: #ef4444;
+    color: #ffffff;
+    border-color: #ef4444;
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);
+    transform: scale(1.05);
+}
+
+.btn-delete:active {
+    transform: scale(0.95);
+}
+
+/* Row-level content styles */
+.td-name {
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.td-message {
+    word-break: break-word;
+    white-space: pre-wrap;
+}
+
+.td-time {
+    color: #9ca3af;
+    font-size: 0.875rem;
+    white-space: nowrap;
+}
+
+.td-actions {
+    text-align: center;
+    width: 60px;
+}
+
+/* Inline forms (like / delete) rendered inside table cells.
+   These reset the global glassmorphism `form` styling, including
+   its flex-direction: column (which would otherwise stack the heart
+   and count on separate lines). */
+.inline-form {
+    margin: 0;
+    padding: 0;
+    background: none;
+    border: none;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.3rem;
+    width: auto;
+}
+
+/* Likes cell + heart button */
+.td-likes {
+    text-align: center;
+    white-space: nowrap;
+    width: 90px;
+}
+
+.btn-like {
+    background: transparent;
+    color: #ec4899;
+    border: none;
+    cursor: pointer;
+    font-size: 0.95rem;
+    padding: 0.1rem;
+    line-height: 1;
+    transition: transform 0.15s ease;
+}
+
+.btn-like:hover {
+    transform: scale(1.2);
+}
+
+.btn-like:active {
+    transform: scale(0.9);
+}
+
+.like-count {
+    font-weight: 600;
+    color: #f3f4f6;
+    font-size: 0.85rem;
+    min-width: 0.75rem;
+    text-align: center;
+}

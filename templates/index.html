@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello World</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/1/14/Google_Cloud_icon_%282026%29.svg" type="image/svg+xml">
+</head>
+<body>
+    <div class="container">
+        <!-- Logo -->
+        <img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/1/14/Google_Cloud_icon_%282026%29.svg" alt="Google Cloud Logo">
+        
+        <!-- Heading -->
+        <h1 id="main-heading">Flask Web App</h1>
+
+        <!-- Flash messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}" id="alert-message">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- Form to Add Greeting -->
+        <form action="/add" method="POST" id="greeting-form">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" placeholder="Enter your name" required maxlength="100">
+            </div>
+            <div class="form-group">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" placeholder="Enter your greeting message" required maxlength="1000"></textarea>
+            </div>
+            <div class="button-row">
+                <button type="submit" class="btn-submit" id="submit-btn">Send Greeting</button>
+                <button type="submit" form="delete-all-form" class="btn-delete-all" title="Delete all greetings">Delete All</button>
+            </div>
+        </form>
+
+        <!-- Hidden form submitted by the Delete All button; reuses the
+             password prompt so deleting everything is gated too. -->
+        <form action="/delete_all" method="POST" id="delete-all-form" class="hidden-form" onsubmit="return askDeletePassword(this);">
+            <input type="hidden" name="password" value="">
+        </form>
+        {% if greetings %}
+        <!-- Greetings Table -->
+        <h2 style="margin-top: 1.5rem; margin-bottom: 1rem; align-self: flex-start; font-size: 1.5rem; font-weight: 600; color: #a5b4fc;">
+            Count: {{ greetings|length }}
+        </h2>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 150px;">Name</th>
+                        <th>Message</th>
+                        <th style="width: 180px;">Date & Time</th>
+                        <th style="width: 90px; text-align: center;">Likes</th>
+                        <th style="width: 80px; text-align: center;">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for g in greetings %}
+                        <tr>
+                            <td class="td-name">{{ g.name }}</td>
+                            <td class="td-message">{{ g.message }}</td>
+                            <td class="td-time">{{ g.created_at }}</td>
+                            <td class="td-likes">
+                                <form action="/like/{{ g.id }}" method="POST" class="inline-form">
+                                    <button type="submit" class="btn-like" title="Like this message">❤️</button>
+                                    <span class="like-count">{{ g.likes }}</span>
+                                </form>
+                            </td>
+                            <td class="td-actions">
+                                <form action="/delete/{{ g.id }}" method="POST" class="inline-form" onsubmit="return askDeletePassword(this);">
+                                    <input type="hidden" name="password" value="">
+                                    <button type="submit" class="btn-delete" title="Delete Greeting">🗑️</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="5" class="empty-state">No greetings yet. Be the first to leave one!</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        // Prompts for the delete password and stashes it in the form's
+        // hidden field so the server can validate it. Returns false
+        // (cancelling the submit) if the user dismisses the prompt.
+        function askDeletePassword(form) {
+            var pw = prompt("Enter the password to delete this greeting:");
+            if (pw === null) {
+                return false;
+            }
+            form.password.value = pw;
+            return true;
+        }
+
+        // Auto-dismiss flash toasts: start fading after 5s, then
+        // remove from the DOM once the CSS transition finishes.
+        document.querySelectorAll(".alert").forEach(function (toast) {
+            setTimeout(function () {
+                toast.classList.add("fade-out");
+                setTimeout(function () {
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
+                    }
+                }, 500);
+            }, 5000);
+        });
+    </script>
+</body>
+</html>
