@@ -1,5 +1,5 @@
 import sqlite3
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from flask import (
@@ -17,6 +17,10 @@ app.secret_key = "flask-message-secret-key"
 DB_PATH = Path(__file__).parent / "messages.db"
 
 DELETE_PASSWORD = "Blahaj"
+
+# Singapore is UTC+8 year-round (no DST), so a fixed offset is both
+# correct and free of any system timezone-database dependency.
+SGT = timezone(timedelta(hours=8))
 
 
 def get_db():
@@ -41,6 +45,25 @@ def init_db():
     )
     conn.commit()
     conn.close()
+
+
+@app.template_filter("sg_time")
+def sg_time(value):
+    """Render a stored UTC timestamp as '26 July 2026, 3:08 pm' in Singapore time.
+
+    Stored timestamps are written as UTC (see add()), then converted to SGT
+    here for display. The string is assembled by hand because strftime's
+    no-leading-zero flag differs between Windows (%#d) and Linux (%-d), and
+    this app runs on both.
+    """
+    dt = (
+        datetime.strptime(value, "%Y-%m-%d %H:%M:%S")
+        .replace(tzinfo=timezone.utc)
+        .astimezone(SGT)
+    )
+    hour = dt.hour % 12 or 12  # 0 -> 12 (midnight/noon on a 12-hour clock)
+    ampm = "am" if dt.hour < 12 else "pm"
+    return f"{dt.day} {dt:%B} {dt.year}, {hour}:{dt.minute:02d} {ampm}"
 
 
 @app.route("/")
@@ -70,7 +93,7 @@ def add():
     conn = get_db()
     conn.execute(
         "INSERT INTO messages (name, message, likes, created_at) VALUES (?, ?, 0, ?)",
-        (name, message, datetime.now().strftime("%Y-%m-%d %H:%M:%S")),
+        (name, message, datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")),
     )
     conn.commit()
     conn.close()

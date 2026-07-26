@@ -68,7 +68,7 @@
                         <tr>
                             <td class="td-name">{{ g.name }}</td>
                             <td class="td-message">{{ g.message }}</td>
-                            <td class="td-time">{{ g.created_at }}</td>
+                            <td class="td-time">{{ g.created_at | sg_time }}</td>
                             <td class="td-likes">
                                 <form action="/like/{{ g.id }}" method="POST" class="inline-form">
                                     <button type="submit" class="btn-like" title="Like this message">❤️</button>
